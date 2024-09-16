@@ -5,24 +5,39 @@ install_aws_cli() {
     echo "Installing AWS CLI..."
 
     if [[ "$1" == "macOS" ]]; then
-        brew install awscli
+        echo "Downloading AWS CLI version 2.17.20 for macOS..."
+        curl "https://awscli.amazonaws.com/AWSCLIV2-2.17.20.pkg" -o "AWSCLIV2.pkg"
+        
+        echo "Installing AWS CLI..."
+        sudo installer -pkg AWSCLIV2.pkg -target /
+
     elif [[ "$1" == "Ubuntu" || "$1" == "Linux" ]]; then
-        sudo apt update
-        sudo apt install -y awscli
+        echo "Downloading AWS CLI version 2.17.20 for Linux..."
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.17.20.zip" -o "awscliv2.zip"
+
+        echo "Unzipping the package..."
+        unzip awscliv2.zip
+        
+        echo "Installing AWS CLI..."
+        sudo ./aws/install
+        
     elif [[ "$1" == "Windows" ]]; then
-        echo "For Windows, please download and install AWS CLI manually from: https://aws.amazon.com/cli/"
+        echo "For Windows, please download and install AWS CLI manually from:"
+        echo "https://awscli.amazonaws.com/AWSCLIV2.msi"
     fi
+    
+    echo "Verifying AWS CLI installation..."
+    aws --version
 }
 
 # Function to install K9s on Ubuntu
 install_k9s_ubuntu() {
     echo "Installing K9s on Ubuntu..."
 
-    echo "1> Go to https://github.com/derailed/k9s/releases"
     echo "Downloading the k9s_Linux_x86_64.tar.gz file from the latest release..."
     
     latest_version=$(curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep "tag_name" | cut -d '"' -f 4)
-    wget wget https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_Linux_amd64.tar.gz
+    wget "https://github.com/derailed/k9s/releases/download/$latest_version/k9s_Linux_amd64.tar.gz"
     
     echo "Unpacking the tar.gz file..."
     tar -xvf k9s_Linux_amd64.tar.gz
@@ -38,11 +53,10 @@ install_k9s_ubuntu() {
 install_k9s_mac() {
     echo "Installing K9s on macOS..."
     
-    echo "1> Go to https://github.com/derailed/k9s/releases"
     echo "Downloading the k9s_Darwin_x86_64.tar.gz file from the latest release..."
     
     latest_version=$(curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep "tag_name" | cut -d '"' -f 4)
-    wget https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_Darwin_amd64.tar.gz
+    wget "https://github.com/derailed/k9s/releases/download/$latest_version/k9s_Darwin_amd64.tar.gz"
     
     echo "Unpacking the tar.gz file..."
     tar -xvf k9s_Darwin_amd64.tar.gz
@@ -67,11 +81,10 @@ install_k9s_windows() {
 install_k9s_linux() {
     echo "Installing K9s on Linux..."
 
-    echo "1> Go to https://github.com/derailed/k9s/releases"
     echo "Downloading the k9s_Linux_x86_64.tar.gz file from the latest release..."
     
     latest_version=$(curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep "tag_name" | cut -d '"' -f 4)
-    wget https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_Linux_amd64.tar.gz
+    wget "https://github.com/derailed/k9s/releases/download/$latest_version/k9s_Linux_amd64.tar.gz"
     
     echo "Unpacking the tar.gz file..."
     tar -xvf k9s_Linux_amd64.tar.gz
